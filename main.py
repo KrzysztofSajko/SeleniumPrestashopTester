@@ -5,26 +5,33 @@ from selenium.webdriver import Chrome
 from typing import Dict, Any, List
 import json
 
-from pages import MainPage, CategoryPage
-from wrappers import ProductWrapper, CategoryWrapper
+from pages import PagesSet
+from wrappers import ProductWrapper, CategoryWrapper, ProductToAddWrapper
 
 with open("config.json", encoding='utf-8') as config_json:
     config: Dict[str, Any] = json.load(config_json)
 
 chromeDriverPath: str = config['driverPath']
-driver: Chrome = Chrome(chromeDriverPath)
-
 shopAddress: str = config['shopAddress']
+
+driver: Chrome = Chrome(chromeDriverPath)
+driver.implicitly_wait(5)
 driver.get(shopAddress)
 
-main_page: MainPage = MainPage(driver)
-category_page: CategoryPage = CategoryPage(driver)
+pages: PagesSet = PagesSet(driver)
 
-categories: List[CategoryWrapper] = main_page.get_categories()
+categories: List[CategoryWrapper] = pages.main.get_categories()
 choice(categories).link.click()
 
-products: List[ProductWrapper] = category_page.get_products()
+products: List[ProductWrapper] = pages.category.get_products()
 choice(products).link.click()
+
+product: ProductToAddWrapper = pages.product.get_product()
+product.counter.clear()
+product.counter.send_keys("5")
+print(product.stock_size)
+product.submit_button.click()
+pages.product.popup_skip()
 
 # driver.quit()
 

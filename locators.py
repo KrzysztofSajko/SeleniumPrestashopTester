@@ -20,7 +20,12 @@ class CategoryPageLocators:
 
 
 class ProductPageLocators:
-    pass
+    COUNTER: Locator = (By.ID, "quantity_wanted")
+    SUBMIT: Locator = (By.CSS_SELECTOR, "#add-to-cart-or-refresh div.add > button")
+    STOCK_SIZE: Locator = (By.CSS_SELECTOR, "#product-details > div.product-quantities > span")
+    POPUP_SKIP: Locator = (By.CSS_SELECTOR, "#blockcart-modal div.cart-content-btn > button")
+    POPUP_ACCEPT: Locator = (By.CSS_SELECTOR, "#blockcart-modal div.cart-content-btn > a")
+    POPUP_CONTAINER: Locator = (By.CSS_SELECTOR, "#blockcart-modal")
 
 
 class CartPageLocators:
