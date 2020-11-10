@@ -1,7 +1,7 @@
 import time
 
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver import Chrome
+from selenium.webdriver import Chrome, ActionChains
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -55,8 +55,6 @@ class ProductPage(BasePage):
     def popup_active(self) -> bool:
         try:
             popup_container: WebElement = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(ProductPageLocators.POPUP_CONTAINER))
-
-            print(popup_container.is_displayed())
             return popup_container.is_displayed()
         except TimeoutException:
             print("Timeout on checking cart popup")
@@ -65,13 +63,14 @@ class ProductPage(BasePage):
     def popup_skip(self):
         time.sleep(1.5)
         if self.popup_active:
-            self.driver.find_element(*ProductPageLocators.POPUP_SKIP).click()
-            print("fired")
+            button: WebElement = self.driver.find_element(*ProductPageLocators.POPUP_SKIP)
+            ActionChains(self.driver).click(button).perform()
 
     def popup_accept(self):
         time.sleep(1.5)
         if self.popup_active:
-            self.driver.find_element(*ProductPageLocators.POPUP_ACCEPT).click()
+            button: WebElement = self.driver.find_element(*ProductPageLocators.POPUP_ACCEPT)
+            ActionChains(self.driver).click(button).perform()
 
 
 class CartPage(BasePage):

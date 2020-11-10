@@ -1,6 +1,6 @@
 from random import choice
 
-from selenium.webdriver import Chrome
+from selenium.webdriver import Chrome, ActionChains
 
 from typing import Dict, Any, List
 import json
@@ -15,24 +15,24 @@ chromeDriverPath: str = config['driverPath']
 shopAddress: str = config['shopAddress']
 
 driver: Chrome = Chrome(chromeDriverPath)
-driver.implicitly_wait(5)
+driver.implicitly_wait(2)
 driver.get(shopAddress)
 
 pages: PagesSet = PagesSet(driver)
 
 categories: List[CategoryWrapper] = pages.main.get_categories()
-choice(categories).link.click()
+ActionChains(driver).click(choice(categories).link).perform()
 
 products: List[ProductWrapper] = pages.category.get_products()
-choice(products).link.click()
+ActionChains(driver).click(choice(products).link).perform()
 
 product: ProductToAddWrapper = pages.product.get_product()
 product.counter.clear()
 product.counter.send_keys("5")
 print(product.stock_size)
-product.submit_button.click()
+ActionChains(driver).click(product.submit_button).perform()
 pages.product.popup_skip()
 
-# driver.quit()
+driver.quit()
 
 
