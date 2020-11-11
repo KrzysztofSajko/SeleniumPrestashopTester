@@ -5,8 +5,9 @@ from myTypes import Locator
 
 class BasePageLocators:
     TOP_MENU: Locator = (By.ID, "top-menu")
-    TOP_MENU_CATEGORY: Locator = (By.CSS_SELECTOR, "a.dropdown-item")
-    TOP_MENU_CATEGORY_CONTAINER: Locator = (By.CSS_SELECTOR, "#top-menu > li")
+    CATEGORY: Locator = (By.CSS_SELECTOR, "a.dropdown-item")
+    CATEGORY_CONTAINER: Locator = (By.CSS_SELECTOR, "#top-menu > li")
+    CURRENT_CATEGORY_CONTAINER: Locator = (By.CSS_SELECTOR, "#top-menu > li.current")
 
 
 class MainPageLocators:
@@ -32,4 +33,5 @@ class ProductPageLocators:
 class CartPageLocators:
     PRODUCT_LIST: Locator = (By.CSS_SELECTOR, "#main  ul.cart-items > li.cart-item")
     PRODUCT_NAME: Locator = (By.CSS_SELECTOR, "div.product-line-info > a")
-    PRODUCT_DELETE: Locator = (By.CSS_SELECTOR, "div.product-line-grid-right div.cart-line-product-actions > a.remove-from-cart")
+    PRODUCT_DELETE: Locator = (By.CSS_SELECTOR,
+                               "div.product-line-grid-right div.cart-line-product-actions > a.remove-from-cart")

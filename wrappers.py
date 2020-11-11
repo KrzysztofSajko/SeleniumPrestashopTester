@@ -13,7 +13,9 @@ class CategoryWrapper(BaseElementWrapper):
 
 
 class ProductWrapper(BaseElementWrapper):
-    pass
+    def __init__(self, id: int, category_id: int, name: str, link: WebElement):
+        super().__init__(id, name, link)
+        self.category_id: int = category_id
 
 
 class ProductToAddWrapper:

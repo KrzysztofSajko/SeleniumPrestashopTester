@@ -5,7 +5,7 @@ from selenium.webdriver import Chrome, ActionChains
 from selenium.webdriver.remote.webelement import WebElement
 
 from myTypes import Locator
-from waiter import Waiter
+from utilty import Waiter, Actions
 
 from typing import List
 
@@ -18,7 +18,7 @@ class BasePage:
         self.driver: Chrome = driver
 
     def get_categories(self) -> List[CategoryWrapper]:
-        containers: List[WebElement] = Waiter.all_found(self.driver, BasePageLocators.TOP_MENU_CATEGORY_CONTAINER)
+        containers: List[WebElement] = Waiter.all_found(self.driver, BasePageLocators.CATEGORY_CONTAINER)
         return [
             CategoryWrapper(
                 i,
@@ -27,9 +27,26 @@ class BasePage:
             )
             for i, category
             in enumerate(map(lambda container:
-                             Waiter.clickable(container, BasePageLocators.TOP_MENU_CATEGORY),
+                             Waiter.clickable(container, BasePageLocators.CATEGORY),
                              containers))
         ]
+
+    def goto_category(self, id: int) -> None:
+        containers: List[WebElement] = Waiter.all_found(self.driver, BasePageLocators.CATEGORY_CONTAINER)
+        category: WebElement = Waiter.clickable(containers[id], BasePageLocators.CATEGORY)
+        Actions.click(self.driver, category)
+
+    def current_category_id(self):
+        containers: List[WebElement] = Waiter.all_found(self.driver, BasePageLocators.CATEGORY_CONTAINER)
+        cat_names: List[str] = [cat.text
+                                for cat
+                                in map(lambda container:
+                                       Waiter.found(container, BasePageLocators.CATEGORY), containers)
+                                ]
+        current: WebElement = Waiter.found(self.driver, BasePageLocators.CURRENT_CATEGORY_CONTAINER).find_element(*BasePageLocators.CATEGORY).text
+        for i, name in enumerate(cat_names):
+            if name == current:
+                return i
 
 
 class MainPage(BasePage):
@@ -39,9 +56,11 @@ class MainPage(BasePage):
 class CategoryPage(BasePage):
     def get_products(self) -> List[ProductWrapper]:
         products_container: WebElement = Waiter.found(self.driver, CategoryPageLocators.PRODUCT_LIST)
+        category_id: int = self.current_category_id()
         return [
             ProductWrapper(
                 i,
+                category_id,
                 product.find_element(*CategoryPageLocators.PRODUCT_NAME).text,
                 Waiter.clickable(product, CategoryPageLocators.PRODUCT_LINK)
             )
@@ -49,13 +68,21 @@ class CategoryPage(BasePage):
             in enumerate(Waiter.all_found(products_container, CategoryPageLocators.PRODUCT))
         ]
 
+    def get_product(self, id: int) -> ProductWrapper:
+        products_container: WebElement = Waiter.found(self.driver, CategoryPageLocators.PRODUCT_LIST)
+        products: List[WebElement] = Waiter.all_found(products_container, CategoryPageLocators.PRODUCT)
+        return ProductWrapper(id,
+                              self.current_category_id(),
+                              products[id].find_element(*CategoryPageLocators.PRODUCT_NAME).text,
+                              Waiter.clickable(products[id], CategoryPageLocators.PRODUCT_LINK))
+
 
 class ProductPage(BasePage):
     def get_product(self) -> ProductToAddWrapper:
         return ProductToAddWrapper(
             Waiter.clickable(self.driver, ProductPageLocators.COUNTER),
             Waiter.clickable(self.driver, ProductPageLocators.SUBMIT),
-            Waiter.found(self.driver, ProductPageLocators.STOCK_SIZE).get_attribute("data-stock")
+            int(Waiter.found(self.driver, ProductPageLocators.STOCK_SIZE).get_attribute("data-stock"))
         )
 
     @property
@@ -100,6 +127,7 @@ class PagesSet:
     def __init__(self, driver: Chrome):
         self.driver: Chrome = driver
         self.main: MainPage = MainPage(driver)
+        self.base: BasePage = BasePage(driver)
         self.category: CategoryPage = CategoryPage(driver)
         self.product: ProductPage = ProductPage(driver)
         self.cart: CartPage = CartPage(driver)

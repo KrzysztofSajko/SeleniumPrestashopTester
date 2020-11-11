@@ -1,9 +1,4 @@
 {
   "driverPath": "C:\\Program Files (x86)\\ChromeDriver\\chromedriver.exe",
-  "shopAddress": "http://192.168.0.101",
-  "categories": [
-    "ramki na zdjęcia",
-    "albumy na zdjęcia",
-    "akcesoria fotograficzne"
-  ]
+  "shopAddress": "http://192.168.0.101"
 }
