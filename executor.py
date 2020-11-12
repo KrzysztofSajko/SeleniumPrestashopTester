@@ -1,25 +1,34 @@
 from functools import reduce
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 from random import shuffle, sample, randint
 
-from pages import PagesSet
+from pages.pageSet import PageSet
 from selenium.webdriver import Chrome
 
-from utilty import Actions
-from wrappers import ProductWrapper, ProductToAddWrapper, CategoryWrapper
+from utility.actions import Actions
+from wrappers.productWrapper import ProductWrapper
+from wrappers.productAdderWrapper import ProductAdderWrapper
+from wrappers.categoryWrapper import CategoryWrapper
 
 
 class Executor:
-    def __init__(self, driver: Chrome, pages: PagesSet):
+    def __init__(self, driver: Chrome, pages: PageSet):
         self.driver: Chrome = driver
-        self.pages: PagesSet = pages
+        self.pages: PageSet = pages
 
-    def add_product_to_cart(self, product: ProductWrapper, checkout: bool = False) -> None:
+    def add_product_to_cart(self, product: ProductWrapper, product_cap: Optional[int] = None, checkout: bool = False, ) -> None:
         Actions.click(self.driver, product.link)
 
-        product_adder: ProductToAddWrapper = self.pages.product.get_product()
+        product_adder: ProductAdderWrapper = self.pages.product.get_product()
         product_adder.counter.clear()
-        product_adder.counter.send_keys(f"{randint(1, product_adder.stock_size)}")
+        if product_cap:
+            amount: int = randint(1,
+                                  product_adder.stock_size
+                                  if product_adder.stock_size < product_cap
+                                  else product_cap)
+        else:
+            amount: int = randint(1, product_adder.stock_size)
+        product_adder.counter.send_keys(f"{amount}")
         Actions.click(self.driver, product_adder.submit_button)
 
         if checkout:
@@ -61,7 +70,7 @@ class Executor:
 
         return product_list
 
-    def scenario_1(self, n_categories: int, n_products: int):
+    def scenario_1(self, n_categories: int, n_products: int, product_cap: int):
         category_product_count: Dict[int, int] = self.__get_category_product_count()
         category_product_count = {k: val
                                   for k, val
@@ -71,4 +80,4 @@ class Executor:
             self.pages.base.goto_category(cat_id)
             product: ProductWrapper = self.pages.category.get_product(product_id)
             if product.name.lower() != "customizable mug":
-                self.add_product_to_cart(product)
+                self.add_product_to_cart(product, product_cap)
