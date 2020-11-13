@@ -1,11 +1,12 @@
 from functools import reduce
 from typing import List, Dict, Tuple, Optional
-from random import shuffle, sample, randint
+from random import shuffle, sample, randint, choice
 
 from pages.pageSet import PageSet
 from selenium.webdriver import Chrome
 
 from utility.actions import Actions
+from wrappers.cartProductWrapper import CartProductWrapper
 from wrappers.productWrapper import ProductWrapper
 from wrappers.productAdderWrapper import ProductAdderWrapper
 from wrappers.categoryWrapper import CategoryWrapper
@@ -16,7 +17,7 @@ class Executor:
         self.driver: Chrome = driver
         self.pages: PageSet = pages
 
-    def add_product_to_cart(self, product: ProductWrapper, product_cap: Optional[int] = None, checkout: bool = False, ) -> None:
+    def __add_product_to_cart(self, product: ProductWrapper, product_cap: Optional[int] = None, checkout: bool = False, ) -> None:
         Actions.click(self.driver, product.link)
 
         product_adder: ProductAdderWrapper = self.pages.product.get_product()
@@ -36,9 +37,6 @@ class Executor:
         else:
             self. pages.product.popup_skip()
 
-    def pick_categories(self, quantity: int) -> List[int]:
-        return [c.id for c in sample(self.pages.base.get_categories(), k=quantity)]
-
     def __get_category_product_count(self) -> Dict[int, int]:
         categories: List[CategoryWrapper] = self.pages.base.get_categories()
         category_product_count: Dict[int, int] = {}
@@ -47,6 +45,11 @@ class Executor:
             products: List[ProductWrapper] = self.pages.category.get_products()
             category_product_count[category.id] = len(products)
         return category_product_count
+
+    def __remove_product_from_cart(self):
+        products: List[CartProductWrapper] = self.pages.cart.get_cart_products()
+        product: CartProductWrapper = choice(products)
+        Actions.click(self.driver, product.delete)
 
     @staticmethod
     def __generate_product_list(category_product_count: Dict[int, int], quantity: int) -> List[Tuple[int, int]]:
@@ -80,4 +83,9 @@ class Executor:
             self.pages.base.goto_category(cat_id)
             product: ProductWrapper = self.pages.category.get_product(product_id)
             if product.name.lower() != "customizable mug":
-                self.add_product_to_cart(product, product_cap)
+                self.__add_product_to_cart(product, product_cap)
+
+    def scenario_2(self, n_products: int):
+        self.pages.base.goto_cart()
+        for i in range(n_products):
+            self.__remove_product_from_cart()

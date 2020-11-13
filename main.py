@@ -20,8 +20,12 @@ pages: PageSet = PageSet(driver)
 
 executor: Executor = Executor(driver, pages)
 
-executor.scenario_1(int(config["scenario_1"]["n_categories"]),
-                    int(config["scenario_1"]["n_items"]),
-                    int(config["scenario_1"]["product_cap"]))
+n_products: int = int(config["scenario_1"]["n_categories"])
+n_items: int = int(config["scenario_1"]["n_items"])
+product_cap: int = int(config["scenario_1"]["product_cap"])
+executor.scenario_1(n_products, n_items, product_cap)
+
+n_products: int = int(config["scenario_2"]["n_products"])
+executor.scenario_2(n_products)
 
 

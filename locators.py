@@ -8,6 +8,7 @@ class BasePageLocators:
     CATEGORY: Locator = (By.CSS_SELECTOR, "a.dropdown-item")
     CATEGORY_CONTAINER: Locator = (By.CSS_SELECTOR, "#top-menu > li")
     CURRENT_CATEGORY_CONTAINER: Locator = (By.CSS_SELECTOR, "#top-menu > li.current")
+    CART: Locator = (By.CSS_SELECTOR, "#_desktop_cart > div > div > a")
 
 
 class MainPageLocators:
@@ -35,3 +36,16 @@ class CartPageLocators:
     PRODUCT_NAME: Locator = (By.CSS_SELECTOR, "div.product-line-info > a")
     PRODUCT_DELETE: Locator = (By.CSS_SELECTOR,
                                "div.product-line-grid-right div.cart-line-product-actions > a.remove-from-cart")
+    FINISH_BUTTON: Locator = (By.CSS_SELECTOR, "#main > div > div.cart-grid-right.col-xs-12.col-lg-4 > div.card.cart-summary > div.checkout.cart-detailed-actions.card-block > div > a")
+
+
+class OrderPageLocators:
+    PERSONAL_MR: Locator = (By.CSS_SELECTOR, "#customer-form > section > div:nth-child(1) > div.col-md-6.form-control-valign > label:nth-child(1) > span > input[type=radio]")
+    PERSONAL_MRS: Locator = (By.CSS_SELECTOR, "#customer-form > section > div:nth-child(1) > div.col-md-6.form-control-valign > label:nth-child(2) > span > input[type=radio]")
+    PERSONAL_NAME: Locator = (By.CSS_SELECTOR, "#customer-form > section > div:nth-child(2) > div.col-md-6 > input")
+    PERSONAL_SURNAME: Locator = (By.CSS_SELECTOR, "#customer-form > section > div:nth-child(3) > div.col-md-6 > input")
+    PERSONAL_EMAIL: Locator = (By.CSS_SELECTOR, "#customer-form > section > div:nth-child(4) > div.col-md-6 > input")
+    PERSONAL_PASSWORD: Locator = (By.CSS_SELECTOR, "#customer-form > section > div:nth-child(6) > div.col-md-6 > div > input")
+    PERSONAL_BIRTHDAY: Locator = (By.CSS_SELECTOR, "#customer-form > section > div:nth-child(7) > div.col-md-6 > input")
+    PERSONAL_NEXT: Locator = (By.CSS_SELECTOR, "#customer-form > footer > button")
+

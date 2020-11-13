@@ -32,6 +32,10 @@ class BasePage:
         category: WebElement = Waiter.clickable(containers[id], BasePageLocators.CATEGORY)
         Actions.click(self.driver, category)
 
+    def goto_cart(self):
+        button: WebElement = Waiter.clickable(self.driver, BasePageLocators.CART)
+        Actions.click(self.driver, button)
+
     def current_category_id(self):
         containers: List[WebElement] = Waiter.all_found(self.driver, BasePageLocators.CATEGORY_CONTAINER)
         cat_names: List[str] = [cat.text

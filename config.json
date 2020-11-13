@@ -3,7 +3,10 @@
   "shopAddress": "http://192.168.0.101",
   "scenario_1": {
     "n_categories": "2",
-    "n_items": "10",
+    "n_items": "3",
     "product_cap": "20"
+  },
+  "scenario_2": {
+    "n_products": "1"
   }
 }
