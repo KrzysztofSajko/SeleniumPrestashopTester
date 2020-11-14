@@ -5,8 +5,11 @@ from random import shuffle, sample, randint, choice
 from pages.pageSet import PageSet
 from selenium.webdriver import Chrome
 
+from utility.user import User
 from utility.actions import Actions
+from utility.waiter import Waiter
 from wrappers.cartProductWrapper import CartProductWrapper
+from wrappers.orderHistoryWrapper import OrderHistoryWrapper
 from wrappers.productWrapper import ProductWrapper
 from wrappers.productAdderWrapper import ProductAdderWrapper
 from wrappers.categoryWrapper import CategoryWrapper
@@ -50,6 +53,7 @@ class Executor:
         products: List[CartProductWrapper] = self.pages.cart.get_cart_products()
         product: CartProductWrapper = choice(products)
         Actions.click(self.driver, product.delete)
+        Waiter.not_in_dom(self.driver, product.delete)
 
     @staticmethod
     def __generate_product_list(category_product_count: Dict[int, int], quantity: int) -> List[Tuple[int, int]]:
@@ -73,7 +77,7 @@ class Executor:
 
         return product_list
 
-    def scenario_1(self, n_categories: int, n_products: int, product_cap: int):
+    def scenario_1(self, n_categories: int, n_products: int, product_cap: int) -> None:
         category_product_count: Dict[int, int] = self.__get_category_product_count()
         category_product_count = {k: val
                                   for k, val
@@ -85,7 +89,23 @@ class Executor:
             if product.name.lower() != "customizable mug":
                 self.__add_product_to_cart(product, product_cap)
 
-    def scenario_2(self, n_products: int):
+    def scenario_2(self, n_products: int) -> None:
         self.pages.base.goto_cart()
         for i in range(n_products):
             self.__remove_product_from_cart()
+
+    def scenario_3(self, delivery_blacklist: List[str], payment_method: str) -> User:
+        self.pages.cart.finish_order()
+        user: User = User.create_normal_user()
+        self.pages.order.fill_personal_form(user)
+        self.pages.order.fill_address_form(user)
+        self.pages.order.choose_delivery_method(delivery_blacklist)
+        self.pages.order.choose_payment_method(payment_method)
+        self.pages.confirmation.wait_load()
+        return user
+
+    def scenario_4(self) -> None:
+        self.pages.base.goto_account()
+        self.pages.account.goto_order_history()
+        orders: List[OrderHistoryWrapper] = self.pages.order_history.get_history_orders()
+        self.pages.order_history.goto_order_details(orders[0])

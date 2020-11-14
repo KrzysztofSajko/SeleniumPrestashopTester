@@ -8,5 +8,9 @@
   },
   "scenario_2": {
     "n_products": "1"
+  },
+  "scenario_3": {
+    "delivery_method_blacklist": ["FotoPog"],
+    "payment_method": "Zapłać przelewem"
   }
 }

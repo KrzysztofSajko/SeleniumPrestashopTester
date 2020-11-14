@@ -20,4 +20,5 @@ class CartPage(BasePage):
         ]
 
     def finish_order(self) -> None:
-        Actions.click(self.driver, Waiter.clickable(self.driver, CartPageLocators.FINISH_BUTTON))
+        self.goto(CartPageLocators.FINISH_BUTTON)
+        # Actions.click(self.driver, Waiter.clickable(self.driver, CartPageLocators.FINISH_BUTTON))

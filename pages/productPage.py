@@ -4,7 +4,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.remote.webelement import WebElement
 
 from locators import ProductPageLocators
-from myTypes import Locator
+from utility.myTypes import Locator
 from pages.basePage import BasePage
 from utility.actions import Actions
 from utility.waiter import Waiter

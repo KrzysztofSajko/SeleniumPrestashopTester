@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-from myTypes import Locator
+from utility.myTypes import Locator
 
 
 class BasePageLocators:
@@ -9,6 +9,7 @@ class BasePageLocators:
     CATEGORY_CONTAINER: Locator = (By.CSS_SELECTOR, "#top-menu > li")
     CURRENT_CATEGORY_CONTAINER: Locator = (By.CSS_SELECTOR, "#top-menu > li.current")
     CART: Locator = (By.CSS_SELECTOR, "#_desktop_cart > div > div > a")
+    UserAccount: Locator = (By.CSS_SELECTOR, "#_desktop_user_info > div > a.account")
 
 
 class MainPageLocators:
@@ -49,3 +50,41 @@ class OrderPageLocators:
     PERSONAL_BIRTHDAY: Locator = (By.CSS_SELECTOR, "#customer-form > section > div:nth-child(7) > div.col-md-6 > input")
     PERSONAL_NEXT: Locator = (By.CSS_SELECTOR, "#customer-form > footer > button")
 
+    ADDRESS_ADDRESS: Locator = (By.CSS_SELECTOR, "#delivery-address > div > section > div:nth-child(7) > div.col-md-6 > input")
+    ADDRESS_POSTCODE: Locator = (By.CSS_SELECTOR, "#delivery-address > div > section > div:nth-child(9) > div.col-md-6 > input")
+    ADDRESS_CITY: Locator = (By.CSS_SELECTOR, "#delivery-address > div > section > div:nth-child(10) > div.col-md-6 > input")
+    ADDRESS_NEXT: Locator = (By.CSS_SELECTOR, "#delivery-address > div > footer > button")
+
+    DELIVERY_METHODS: Locator = (By.CSS_SELECTOR, "#js-delivery div.delivery-option")
+    DELIVERY_METHOD_NAME: Locator = (By.CSS_SELECTOR, "label span.carrier-name")
+    DELIVERY_METHOD_RADIO: Locator = (By.CSS_SELECTOR, "input[type=radio]")
+    DELIVERY_METHOD_NEXT: Locator = (By.CSS_SELECTOR, "#js-delivery > button")
+
+    PAYMENT_METHODS: Locator = (By.CSS_SELECTOR, "#checkout-payment-step div.payment-options div.payment-option")
+    PAYMENT_METHOD_NAME: Locator = (By.CSS_SELECTOR, "label > span")
+    PAYMENT_METHOD_RADIO: Locator = (By.CSS_SELECTOR, "span > input[type=radio]")
+    PAYMENT_AGREE: Locator = (By.CSS_SELECTOR, "#conditions-to-approve span.custom-checkbox > input[type=checkbox]")
+    PAYMENT_ACCEPT: Locator = (By.CSS_SELECTOR, "#payment-confirmation button")
+
+
+class ConfirmationPageLocators:
+    BODY: Locator = (By.CSS_SELECTOR, "#order-confirmation")
+
+
+class AccountPageLocators:
+    OPTIONS_INFO: Locator = (By.CSS_SELECTOR, "#identity-link")
+    OPTIONS_ADDRESS: Locator = (By.CSS_SELECTOR, "#addresses-link")
+    OPTIONS_ORDER_HISTORY: Locator = (By.CSS_SELECTOR, "#history-link")
+    OPTIONS_RECEIPTS: Locator = (By.CSS_SELECTOR, "#order-slips-link")
+
+
+class OrderHistoryPageLocators:
+    ORDER_TABLE: Locator = (By.CSS_SELECTOR, "#content > table")
+    TABLE_ROWS: Locator = (By.CSS_SELECTOR, "#content > table > tbody > tr")
+    ROW_ORDER_ID: Locator = (By.CSS_SELECTOR, "th")
+    ROW_ORDER_DETAILS: Locator = (By.CSS_SELECTOR, "td.text-sm-center.order-actions > a:nth-child(1)")
+
+    DIV_ORDER_CONTAINER: Locator = (By.CSS_SELECTOR, "#content > div.orders")
+    DIV_ORDER: Locator = (By.CSS_SELECTOR, "#content > div.orders > div.order")
+    DIV_ORDER_ID: Locator = (By.CSS_SELECTOR, "div.col-xs-10 > a > h3")
+    DIV_ORDER_DETAILS: Locator = (By.CSS_SELECTOR, " div.col-xs-2.text-xs-right > div:nth-child(1) > a")
