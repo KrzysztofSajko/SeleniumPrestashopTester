@@ -7,3 +7,5 @@ Packages:
   - Unidecode
   - future
   - selenium
+
+You also need to have chromedriver add path to it in config.json
