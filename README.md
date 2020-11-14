@@ -5,5 +5,5 @@ Python version 3.7
 Packages:
   - Faker
   - Unidecode
-  - __future__
+  - future
   - selenium
