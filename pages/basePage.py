@@ -27,34 +27,26 @@ class BasePage:
             CategoryWrapper(
                 i,
                 category.text,
-                category
-            )
+                category)
             for i, category
             in enumerate(map(lambda container:
                              Waiter.clickable(container, BasePageLocators.CATEGORY),
-                             containers))
-        ]
+                             containers))]
 
     def goto_category(self, id: int) -> None:
-        # containers: List[WebElement] = Waiter.all_found(self.driver, BasePageLocators.CATEGORY_CONTAINER)
-        # category: WebElement = Waiter.clickable(containers[id], BasePageLocators.CATEGORY)
-        # Actions.click(self.driver, category)
         self.goto(BasePageLocators.CATEGORY,
                   Waiter.all_found(self.driver,
                                    BasePageLocators.CATEGORY_CONTAINER)[id])
 
-    def goto_cart(self):
-        # button: WebElement = Waiter.clickable(self.driver, BasePageLocators.CART)
-        # Actions.click(self.driver, button)
+    def goto_cart(self) -> None:
         self.goto(BasePageLocators.CART)
 
-    def current_category_id(self):
-        containers: List[WebElement] = Waiter.all_found(self.driver, BasePageLocators.CATEGORY_CONTAINER)
+    def current_category_id(self) -> int:
         cat_names: List[str] = [cat.text
                                 for cat
                                 in map(lambda container:
-                                       Waiter.found(container, BasePageLocators.CATEGORY), containers)
-                                ]
+                                       Waiter.found(container, BasePageLocators.CATEGORY),
+                                       Waiter.all_found(self.driver, BasePageLocators.CATEGORY_CONTAINER))]
         current: WebElement = Waiter.found(self.driver,
                                            BasePageLocators.CURRENT_CATEGORY_CONTAINER).find_element(*BasePageLocators.CATEGORY).text
         for i, name in enumerate(cat_names):

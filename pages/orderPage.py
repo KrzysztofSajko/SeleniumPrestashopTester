@@ -76,8 +76,7 @@ class OrderPage:
         return [
             DeliveryMethodWrapper(
                 Waiter.found(method, OrderPageLocators.DELIVERY_METHOD_NAME).text,
-                Waiter.found(method, OrderPageLocators.DELIVERY_METHOD_RADIO)
-            )
+                Waiter.found(method, OrderPageLocators.DELIVERY_METHOD_RADIO))
             for i, method
             in enumerate(Waiter.all_found(self.driver, OrderPageLocators.DELIVERY_METHODS))]
 
@@ -85,11 +84,9 @@ class OrderPage:
         return [
             PaymentMethodWrapper(
                 Waiter.found(method, OrderPageLocators.PAYMENT_METHOD_NAME).text,
-                Waiter.found(method, OrderPageLocators.PAYMENT_METHOD_RADIO)
-            )
+                Waiter.found(method, OrderPageLocators.PAYMENT_METHOD_RADIO))
             for method
-            in Waiter.all_found(self.driver, OrderPageLocators.PAYMENT_METHODS)
-        ]
+            in Waiter.all_found(self.driver, OrderPageLocators.PAYMENT_METHODS)]
 
     def get_agree_terms(self) -> WebElement:
         return Waiter.found(self.driver, OrderPageLocators.PAYMENT_AGREE)

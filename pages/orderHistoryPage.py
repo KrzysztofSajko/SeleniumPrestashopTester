@@ -10,7 +10,7 @@ from wrappers.orderHistoryWrapper import OrderHistoryWrapper
 
 
 class OrderHistoryPage(BasePage):
-    def goto_order_details(self, order: OrderHistoryWrapper):
+    def goto_order_details(self, order: OrderHistoryWrapper) -> None:
         Actions.click(self.driver, order.details)
 
     def check_if_table(self) -> bool:

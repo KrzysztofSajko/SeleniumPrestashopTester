@@ -17,11 +17,9 @@ class CategoryPage(BasePage):
                 i,
                 category_id,
                 product.find_element(*CategoryPageLocators.PRODUCT_NAME).text,
-                Waiter.clickable(product, CategoryPageLocators.PRODUCT_LINK)
-            )
+                Waiter.clickable(product, CategoryPageLocators.PRODUCT_LINK))
             for i, product
-            in enumerate(Waiter.all_found(products_container, CategoryPageLocators.PRODUCT))
-        ]
+            in enumerate(Waiter.all_found(products_container, CategoryPageLocators.PRODUCT))]
 
     def get_product(self, id: int) -> ProductWrapper:
         products_container: WebElement = Waiter.found(self.driver, CategoryPageLocators.PRODUCT_LIST)

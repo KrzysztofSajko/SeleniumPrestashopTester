@@ -20,7 +20,10 @@ class Executor:
         self.driver: Chrome = driver
         self.pages: PageSet = pages
 
-    def __add_product_to_cart(self, product: ProductWrapper, product_cap: Optional[int] = None, checkout: bool = False, ) -> None:
+    def __add_product_to_cart(self,
+                              product: ProductWrapper,
+                              product_cap: Optional[int] = None,
+                              checkout: bool = False) -> None:
         Actions.click(self.driver, product.link)
 
         product_adder: ProductAdderWrapper = self.pages.product.get_product()
@@ -50,8 +53,7 @@ class Executor:
         return category_product_count
 
     def __remove_product_from_cart(self):
-        products: List[CartProductWrapper] = self.pages.cart.get_cart_products()
-        product: CartProductWrapper = choice(products)
+        product: CartProductWrapper = choice(self.pages.cart.get_cart_products())
         Actions.click(self.driver, product.delete)
         Waiter.not_in_dom(self.driver, product.delete)
 
@@ -86,8 +88,7 @@ class Executor:
         for cat_id, product_id in product_list:
             self.pages.base.goto_category(cat_id)
             product: ProductWrapper = self.pages.category.get_product(product_id)
-            if product.name.lower() != "customizable mug":
-                self.__add_product_to_cart(product, product_cap)
+            self.__add_product_to_cart(product, product_cap)
 
     def scenario_2(self, n_products: int) -> None:
         self.pages.base.goto_cart()

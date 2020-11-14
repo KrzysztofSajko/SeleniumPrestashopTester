@@ -26,4 +26,5 @@ class Actions:
             driver.execute_script("arguments[0].scrollIntoView();", element)
             time.sleep(0.5)
         element.clear()
+        time.sleep(0.5)
         element.send_keys(text)

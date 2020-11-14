@@ -2,7 +2,6 @@ from typing import List
 
 from locators import CartPageLocators
 from pages.basePage import BasePage
-from utility.actions import Actions
 from utility.waiter import Waiter
 from wrappers.cartProductWrapper import CartProductWrapper
 
@@ -13,12 +12,9 @@ class CartPage(BasePage):
             CartProductWrapper(
                 i,
                 Waiter.found(product, CartPageLocators.PRODUCT_NAME).text,
-                Waiter.clickable(product, CartPageLocators.PRODUCT_DELETE)
-            )
+                Waiter.clickable(product, CartPageLocators.PRODUCT_DELETE))
             for i, product
-            in enumerate(Waiter.all_found(self.driver, CartPageLocators.PRODUCT_LIST))
-        ]
+            in enumerate(Waiter.all_found(self.driver, CartPageLocators.PRODUCT_LIST))]
 
     def finish_order(self) -> None:
         self.goto(CartPageLocators.FINISH_BUTTON)
-        # Actions.click(self.driver, Waiter.clickable(self.driver, CartPageLocators.FINISH_BUTTON))

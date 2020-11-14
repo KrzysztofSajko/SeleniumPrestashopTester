@@ -16,8 +16,7 @@ class ProductPage(BasePage):
         return ProductAdderWrapper(
             Waiter.clickable(self.driver, ProductPageLocators.COUNTER),
             Waiter.clickable(self.driver, ProductPageLocators.SUBMIT),
-            int(Waiter.found(self.driver, ProductPageLocators.STOCK_SIZE).get_attribute("data-stock"))
-        )
+            int(Waiter.found(self.driver, ProductPageLocators.STOCK_SIZE).get_attribute("data-stock")))
 
     @property
     def popup_active(self) -> bool:
