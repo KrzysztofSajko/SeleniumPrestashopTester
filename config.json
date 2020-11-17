@@ -11,6 +11,6 @@
   },
   "scenario_3": {
     "delivery_method_blacklist": ["FotoPog"],
-    "payment_method": "Zapłać przelewem"
+    "payment_method": "Zapłać gotówką przy odbiorze"
   }
 }

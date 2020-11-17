@@ -13,7 +13,7 @@ class Actions:
               move_to: bool = True) -> None:
         chain: ActionChains = ActionChains(driver)
         if scroll_to_element:
-            driver.execute_script("arguments[0].scrollIntoView();", element)
+            driver.execute_script("arguments[0].scrollIntoViewIfNeeded();", element)
             time.sleep(0.5)
         if move_to:
             chain.move_to_element(element)
@@ -23,7 +23,7 @@ class Actions:
     @classmethod
     def input_text(cls, driver: Chrome, element: WebElement, text: str, scroll_to_element: bool = True) -> None:
         if scroll_to_element:
-            driver.execute_script("arguments[0].scrollIntoView();", element)
+            driver.execute_script("arguments[0].scrollIntoViewIfNeeded();", element)
             time.sleep(0.5)
         element.clear()
         time.sleep(0.5)
