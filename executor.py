@@ -1,5 +1,6 @@
+from dataclasses import dataclass
 from functools import reduce
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Any
 from random import shuffle, sample, randint, choice
 
 from pages.pageSet import PageSet
@@ -15,10 +16,10 @@ from wrappers.productAdderWrapper import ProductAdderWrapper
 from wrappers.categoryWrapper import CategoryWrapper
 
 
+@dataclass
 class Executor:
-    def __init__(self, driver: Chrome, pages: PageSet):
-        self.driver: Chrome = driver
-        self.pages: PageSet = pages
+    driver: Chrome
+    pages: PageSet
 
     def __add_product_to_cart(self,
                               product: ProductWrapper,
@@ -29,12 +30,13 @@ class Executor:
         product_adder: ProductAdderWrapper = self.pages.product.get_product()
         product_adder.counter.clear()
         if product_cap:
-            amount: int = randint(1,
-                                  product_adder.stock_size
-                                  if product_adder.stock_size < product_cap
-                                  else product_cap)
+            limit: int = (product_adder.stock_size
+                          if product_adder.stock_size < product_cap
+                          else product_cap)
+            amount: int = randint(1, limit)
         else:
             amount: int = randint(1, product_adder.stock_size)
+
         product_adder.counter.send_keys(f"{amount}")
         Actions.click(self.driver, product_adder.submit_button)
 
@@ -46,10 +48,11 @@ class Executor:
     def __get_category_product_count(self) -> Dict[int, int]:
         categories: List[CategoryWrapper] = self.pages.base.get_categories()
         category_product_count: Dict[int, int] = {}
+
         for category in categories:
             self.pages.base.goto_category(category.id)
-            products: List[ProductWrapper] = self.pages.category.get_products()
-            category_product_count[category.id] = len(products)
+            category_product_count[category.id] = len(self.pages.category.get_products())
+
         return category_product_count
 
     def __remove_product_from_cart(self):
@@ -74,34 +77,40 @@ class Executor:
                 product_list.append((cat_id, category_products[cat_id].pop()))
                 i += 1
             j += 1
-            if not reduce(lambda a, b: a or b, category_products.values()):
+            if not reduce(lambda a, b: a or b, (product_list for product_list in category_products.values())):
                 break
 
         return product_list
 
-    def scenario_1(self, n_categories: int, n_products: int, product_cap: int) -> None:
+    def skip_https(self) -> None:
+        self.pages.https.wait_loaded()
+        self.pages.https.skip()
+
+    def scenario_1(self, config: Dict[str, str]) -> None:
         category_product_count: Dict[int, int] = self.__get_category_product_count()
         category_product_count = {k: val
                                   for k, val
-                                  in sample(list(category_product_count.items()), k=n_categories)}
-        product_list: List[Tuple[int, int]] = self.__generate_product_list(category_product_count, n_products)
+                                  in sample(list(category_product_count.items()), k=int(config["categories"]))}
+        product_list: List[Tuple[int, int]] = self.__generate_product_list(category_product_count, int(config["products"]))
+
         for cat_id, product_id in product_list:
             self.pages.base.goto_category(cat_id)
             product: ProductWrapper = self.pages.category.get_product(product_id)
-            self.__add_product_to_cart(product, product_cap)
+            self.__add_product_to_cart(product, int(config["maxQuantity"]))
 
-    def scenario_2(self, n_products: int) -> None:
+    def scenario_2(self, config: Dict[str, str]) -> None:
         self.pages.base.goto_cart()
-        for i in range(n_products):
+        for i in range(int(config["products"])):
             self.__remove_product_from_cart()
 
-    def scenario_3(self, delivery_blacklist: List[str], payment_method: str) -> User:
+    def scenario_3(self, config: Dict[str, Any]) -> User:
         self.pages.cart.finish_order()
         user: User = User.create_normal_user()
+
         self.pages.order.fill_personal_form(user)
         self.pages.order.fill_address_form(user)
-        self.pages.order.choose_delivery_method(delivery_blacklist)
-        self.pages.order.choose_payment_method(payment_method)
+        self.pages.order.choose_delivery_method(config["deliveryMethodBlacklist"])
+        self.pages.order.choose_payment_method(config["paymentMethod"])
         self.pages.confirmation.wait_load()
         return user
 
