@@ -1,16 +1,16 @@
 {
   "driverPath": "C:\\Program Files (x86)\\ChromeDriver\\chromedriver.exe",
   "shopAddress": "http://192.168.0.101",
-  "scenario_1": {
-    "n_categories": "2",
-    "n_items": "10",
-    "product_cap": "20"
+  "scenario1": {
+    "categories": "2",
+    "products": "10",
+    "maxQuantity": "20"
   },
-  "scenario_2": {
-    "n_products": "1"
+  "scenario2": {
+    "products": "1"
   },
-  "scenario_3": {
-    "delivery_method_blacklist": ["FotoPog"],
-    "payment_method": "Zapłać gotówką przy odbiorze"
+  "scenario3": {
+    "deliveryMethodBlacklist": ["FotoPog"],
+    "paymentMethod": "Zapłać gotówką przy odbiorze"
   }
 }

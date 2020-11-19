@@ -88,3 +88,8 @@ class OrderHistoryPageLocators:
     DIV_ORDER: Locator = (By.CSS_SELECTOR, "#content > div.orders > div.order")
     DIV_ORDER_ID: Locator = (By.CSS_SELECTOR, "div.col-xs-10 > a > h3")
     DIV_ORDER_DETAILS: Locator = (By.CSS_SELECTOR, " div.col-xs-2.text-xs-right > div:nth-child(1) > a")
+
+
+class HttpsPageLocators:
+    ADVANCED: Locator = (By.CSS_SELECTOR, "#details-button")
+    LINK: Locator = (By.CSS_SELECTOR, "#proceed-link")

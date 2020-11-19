@@ -6,11 +6,7 @@ from selenium.webdriver import Chrome, ActionChains
 
 class Actions:
     @classmethod
-    def click(cls,
-              driver: Chrome,
-              element: WebElement,
-              scroll_to_element: bool = True,
-              move_to: bool = True) -> None:
+    def click(cls, driver: Chrome, element: WebElement, scroll_to_element: bool = True, move_to: bool = True) -> None:
         chain: ActionChains = ActionChains(driver)
         if scroll_to_element:
             driver.execute_script("arguments[0].scrollIntoViewIfNeeded();", element)

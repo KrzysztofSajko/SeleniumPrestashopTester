@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import List, Union, Optional
 
 from selenium.webdriver import Chrome
@@ -10,9 +11,9 @@ from utility.waiter import Waiter
 from wrappers.categoryWrapper import CategoryWrapper
 
 
+@dataclass
 class BasePage:
-    def __init__(self, driver: Chrome):
-        self.driver: Chrome = driver
+    driver: Chrome
 
     def goto(self, locator: Locator, container: Optional[Union[Chrome, WebElement]] = None) -> None:
         container = container or self.driver

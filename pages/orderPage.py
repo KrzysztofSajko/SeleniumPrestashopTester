@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from random import choice
 from typing import List, Optional
 
@@ -12,10 +13,9 @@ from utility.waiter import Waiter
 from wrappers.deliveryMethodWrapper import DeliveryMethodWrapper
 from wrappers.paymentMethodWrapper import PaymentMethodWrapper
 
-
+@dataclass
 class OrderPage:
-    def __init__(self, driver: Chrome):
-        self.driver: Chrome = driver
+    driver: Chrome
 
     def select_gender(self, gender: Gender) -> None:
         locator: Locator = OrderPageLocators.PERSONAL_MR if gender == Gender.MALE else OrderPageLocators.PERSONAL_MRS

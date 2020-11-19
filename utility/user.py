@@ -7,18 +7,20 @@ from unidecode import unidecode
 
 from utility.myTypes import Gender
 
+from dataclasses import dataclass
 
+
+@dataclass
 class User:
-    def __init__(self, gender: Gender, name: str, surname: str, email: str, password: str, birthday: str, address: str, postcode: str, city: str):
-        self.gender: Gender = gender
-        self.name: str = name
-        self.surname: str = surname
-        self.email: str = email
-        self.password: str = password
-        self.birthday: str = birthday
-        self.address: str = address
-        self.postcode: str = postcode
-        self.city: str = city
+    gender: Gender
+    name: str
+    surname: str
+    email: str
+    password: str
+    birthday: str
+    address: str
+    postcode: str
+    city: str
 
     @classmethod
     def create_normal_user(cls) -> User:
