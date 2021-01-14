@@ -1,6 +1,6 @@
 {
   "driverPath": "C:\\Program Files (x86)\\ChromeDriver\\chromedriver.exe",
-  "shopAddress": "http://192.168.0.101",
+  "shopAddress": "http://localhost:20013/",
   "scenario1": {
     "categories": "2",
     "products": "10",

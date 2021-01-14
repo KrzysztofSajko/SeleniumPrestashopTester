@@ -28,6 +28,9 @@ class Executor:
         Actions.click(self.driver, product.link)
 
         product_adder: ProductAdderWrapper = self.pages.product.get_product()
+        if product_adder.stock_size == 0:
+            return
+
         product_adder.counter.clear()
         if product_cap:
             limit: int = (product_adder.stock_size
